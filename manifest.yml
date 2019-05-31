@@ -1,0 +1,10 @@
+---
+applications:
+- name: try_js
+  command: node index.js
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
+  memory: 128MB
+  disk_quota: 256MB
+  services:
+  - mongodb
+---

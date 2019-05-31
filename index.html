@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel=stylesheet type="text/css" href="style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>HASHA-WISE-PAAS</title>
+  </head>
+  <body>
+    <h2>HASHA-DATA</h1>
+      <p id='server-time'></p>
+      <div class='fixed' >
+          <p id>Hello i am iron man</p>
+          <div id="chat_bot_text"></div>>
+
+          <input type="text" name='first'>
+          <button  onclick="getinput()">input</button>
+        </div>
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+                <form id="form">
+                        <div class="form-group">
+                          <label for="formGroupExampleInput">PM2.5</label>
+                        </div>
+                </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+                <ul class="list-group" id="display_pm">
+                        
+                </ul>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+                <form id="form">
+                        <div class="form-group">
+                          <label for="formGroupExampleInput">溫度</label>
+                        </div>
+                </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+                <ul class="list-group" id="display_tem">
+                        
+                </ul>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+                <form id="form">
+                        <div class="form-group">
+                          <label for="formGroupExampleInput">濕度</label>
+                        </div>
+                </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+                <ul class="list-group" id="display_hum">
+                        
+                </ul>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+
+
+
+
+
+</div>
+    
+    <script>
+            var HOST = location.origin.replace(/^http/, 'ws')
+            
+            
+            var ws = new WebSocket(HOST);
+            function getinput(){
+           var chat_bot_text = document.getElementById('chat_bot_text');
+           var inpu = document.getElementsByName('first')[0].value;
+            console.log(inpu);
+            ws.send(inpu);
+            var br = document.createElement("br");
+            chat_bot_text.appendChild(br);
+            chat_bot_text.append(inpu);
+            //chat_bot_text.append(`<p>${inpu}</p>`);
+            //ws.onopen = () => ws.send("hello");
+
+         
+          
+            }
+            var chat_bot_text = document.getElementById("chat_bot_text");
+            var el = document.getElementById('server-time');
+            ws.onmessage = function (event) {
+            el.innerHTML = 'Server time: ' + event.data;
+            // console.log(event.data)
+            // var br = document.createElement("br");
+            // chat_bot_text.appendChild(br);
+            // chat_bot_text.append(event.data);
+            
+            if(event.data === '30度')
+            {
+              var br = document.createElement("br");
+              chat_bot_text.appendChild(br);
+              chat_bot_text.append(event.data);
+             }
+          };
+
+          
+          // var el = document.getElementById('server-time');
+          // ws.onmessage = function (event) {
+          // el.innerHTML = 'Server time: ' + event.data;
+          // console.log(event.data)};
+
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+
+            $(document).ready(()=>{
+                const display_pm = $("#display_pm");
+                const display_tem = $("#display_tem");
+                const display_hum = $("#display_hum");
+                const form = $('#form');
+
+                
+            const getpmdatas = ()=>{
+              fetch('/getitems/pm',{method:"get"}).then((response)=>{
+                return response.json();
+              }).then((data)=>{
+                //console.log(data);
+                displaypmdata(data)
+              });
+            }
+            getpmdatas()
+
+            const gettemdatas = ()=>{
+              fetch('/getitems/temperature',{method:"get"}).then((response)=>{
+                return response.json();
+              }).then((data)=>{
+                //console.log(data);
+                displaytemdata(data)
+              });
+            }
+            gettemdatas()
+
+            const gethumdatas = ()=>{
+              fetch('/getitems/humidity',{method:"get"}).then((response)=>{
+                return response.json();
+              }).then((data)=>{
+                //console.log(data);
+                displayhumdata(data)
+              });
+            }
+            gethumdatas()
+
+
+            const buildIDS = (todo)=>{
+              return {
+                  deleteID:'delete_' + todo._id,
+                  listItemID:"listemItem_" + todo._id,
+                  todoID:"todo_" + todo._id
+              }
+            }
+            const buildTemplete= (todo,ids)=>{
+              return `<li class="list-group-item" id="${ids.listItemID}">
+                                        <div class="row">
+                                            <div class=" " id="${ids.todoID}">${todo.datatime}</div>
+                                            <div class=" "  id="${ids.todoID}" style="color:blue" >: ${todo.data}</div>
+                                        </div>
+                                        
+                        </li>`;
+            }
+
+            const displaypmdata = (data)=>{
+              data.forEach((todo)=>{
+                
+                let ids = buildIDS(todo);
+                display_pm.append(buildTemplete(todo,ids));
+                //console.log(todo);
+                //console.log(ids);
+                //display.append(buildTemplete(todo,ids));
+              })
+            }
+
+            const displaytemdata = (data)=>{
+              data.forEach((todo)=>{
+                
+                let ids = buildIDS(todo);
+                display_tem.append(buildTemplete(todo,ids));
+                //console.log(todo);
+                //console.log(ids);
+                //display.append(buildTemplete(todo,ids));
+              })
+            }
+
+            const displayhumdata = (data)=>{
+              data.forEach((todo)=>{
+                
+                let ids = buildIDS(todo);
+                display_hum.append(buildTemplete(todo,ids));
+                //console.log(todo);
+                //console.log(ids);
+                //display.append(buildTemplete(todo,ids));
+              })
+            }
+            
+
+          
+
+          });
+
+    </script>
+  </body>
+</html>
+
+
+
+
+<!-- 
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+                <form id="form">
+                        <div class="form-group">
+                          <label for="formGroupExampleInput">PM2.5</label>
+                        </div>
+                </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+                <ul class="list-group" id="display">
+                        
+                </ul>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div> -->

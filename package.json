@@ -1,0 +1,24 @@
+{
+  "name": "try_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cfenv": "^1.2.2",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "mongodb": "^3.2.4",
+    "mongoose": "^5.5.8",
+    "socket.io": "^2.2.0",
+    "ws": "^7.0.0"
+  },
+  "engines": {
+    "node": "10.15.0",
+    "npm": "6.4.1"
+  }
+}
